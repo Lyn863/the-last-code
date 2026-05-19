@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园人格测试 - 五大人格维度</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#000000',
+                        secondary: '#666666',
+                        accent: '#3B82F6',
+                        neutral: {
+                            100: '#F9FAFB',
+                            200: '#F3F4F6',
+                            300: '#E5E7EB',
+                            400: '#D1D5DB',
+                            500: '#9CA3AF',
+                            600: '#6B7280',
+                            700: '#4B5563',
+                            800: '#1F2937',
+                            900: '#111827',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .card-hover:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            }
+            .line-element {
+                @apply h-px bg-black my-6;
+            }
+            .corner-line {
+                @apply absolute;
+            }
+            .corner-line-top {
+                @apply top-0 left-0 w-16 h-px bg-black;
+            }
+            .corner-line-left {
+                @apply top-0 left-0 h-16 w-px bg-black;
+            }
+            .corner-line-bottom {
+                @apply bottom-0 right-0 w-16 h-px bg-black;
+            }
+            .corner-line-right {
+                @apply bottom-0 right-0 h-16 w-px bg-black;
+            }
+            .horizontal-line {
+                @apply absolute left-0 h-px bg-black opacity-70;
+            }
+            .vertical-line {
+                @apply absolute top-0 w-px bg-black opacity-70;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white font-sans text-neutral-900 overflow-x-hidden">
+    <!-- 自定义鼠标 -->
+    <div id="custom-cursor" class="fixed w-6 h-6 rounded-full border border-black pointer-events-none mix-blend-difference z-50 transform -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-300"></div>
+    
+    <div class="relative min-h-screen">
+        <!-- 首页/引导页 -->
+        <section id="intro-page" class="screen relative min-h-screen bg-white z-50 flex items-center justify-center overflow-hidden">
+            <!-- 装饰线条 -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="horizontal-line top-1/4 w-full"></div>
+                <div class="horizontal-line top-2/4 w-full"></div>
+                <div class="horizontal-line top-3/4 w-full"></div>
+                <div class="vertical-line left-1/4 h-full"></div>
+                <div class="vertical-line left-2/4 h-full"></div>
+                <div class="vertical-line left-3/4 h-full"></div>
+            </div>
+            
+            <!-- 角落线条 -->
+            <div class="corner-line corner-line-top"></div>
+            <div class="corner-line corner-line-left"></div>
+            <div class="corner-line corner-line-bottom"></div>
+            <div class="corner-line corner-line-right"></div>
+            
+            <div class="container mx-auto px-4 py-8 max-w-4xl relative z-10">
+                <div class="text-center">
+                    <h1 class="text-5xl md:text-7xl font-light text-primary mb-8 text-shadow">校园人格测试</h1>
+                    <div class="line-element w-32 mx-auto"></div>
+                    <p class="text-xl text-neutral-600 mb-12 max-w-2xl mx-auto">探索你的五大人格维度，发现属于你的校园人格类型</p>
+                    
+                    <div class="mb-16">
+                        <div class="flex flex-wrap justify-center gap-6 mb-8">
+                            <div class="group relative">
+                                <span class="text-lg font-light border-b border-transparent group-hover:border-black transition-all-300 pb-1">外向性 (E)</span>
+                                <div class="indicator-line w-0 group-hover:w-full h-px bg-black absolute bottom-0 left-0 transition-all duration-300"></div>
+                            </div>
+                            <div class="group relative">
+                                <span class="text-lg font-light border-b border-transparent group-hover:border-black transition-all-300 pb-1">开放性 (O)</span>
+                                <div class="indicator-line w-0 group-hover:w-full h-px bg-black absolute bottom-0 left-0 transition-all duration-300"></div>
+                            </div>
+                            <div class="group relative">
+                                <span class="text-lg font-light border-b border-transparent group-hover:border-black transition-all-300 pb-1">宜人性 (A)</span>
+                                <div class="indicator-line w-0 group-hover:w-full h-px bg-black absolute bottom-0 left-0 transition-all duration-300"></div>
+                            </div>
+                            <div class="group relative">
+                                <span class="text-lg font-light border-b border-transparent group-hover:border-black transition-all-300 pb-1">尽责性 (C)</span>
+                                <div class="indicator-line w-0 group-hover:w-full h-px bg-black absolute bottom-0 left-0 transition-all duration-300"></div>
+                            </div>
+                            <div class="group relative">
+                                <span class="text-lg font-light border-b border-transparent group-hover:border-black transition-all-300 pb-1">神经质 (N)</span>
+                                <div class="indicator-line w-0 group-hover:w-full h-px bg-black absolute bottom-0 left-0 transition-all duration-300"></div>
+                            </div>
+                        </div>
+                        <p class="text-neutral-500 max-w-md mx-auto">本测试基于五大人格理论，通过40道题目评估你的人格特质</p>
+                    </div>
+                    
+                    <button id="start-test-btn" class="bg-white border border-black text-primary font-light py-3 px-10 rounded-none hover:bg-black hover:text-white transition-all-300 text-lg hover-effect">
+                        开始测试
+                        <i class="fa fa-arrow-right ml-3"></i>
+                    </button>
+                    
+                    <!-- 数据统计按钮 -->
+                    <button id="stats-btn" class="mt-6 bg-white border border-neutral-300 text-neutral-600 font-light py-2 px-6 rounded-none hover:bg-neutral-50 transition-all-300 text-sm hover-effect">
+                        <i class="fa fa-bar-chart mr-2"></i> 查看统计数据
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 测试答题页 -->
+        <section id="test-page" class="screen relative min-h-screen bg-white z-40 flex items-center justify-center hidden">
+            <!-- 装饰线条 -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="horizontal-line top-1/4 w-full"></div>
+                <div class="horizontal-line top-2/4 w-full"></div>
+                <div class="horizontal-line top-3/4 w-full"></div>
+                <div class="vertical-line left-1/4 h-full"></div>
+                <div class="vertical-line left-2/4 h-full"></div>
+                <div class="vertical-line left-3/4 h-full"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 py-8 max-w-4xl relative z-10 w-full">
+                <!-- 进度条 -->
+                <div class="mb-12">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-light text-neutral-600">进度</span>
+                        <span id="progress-text" class="text-sm font-light text-primary">1/40</span>
+                    </div>
+                    <div class="w-full bg-neutral-200 h-px">
+                        <div id="progress-bar" class="bg-primary h-px transition-all duration-300" style="width: 2.5%"></div>
+                    </div>
+                </div>
+
+                <!-- 题目区域 -->
+                <div id="question-container" class="mb-12">
+                    <h2 id="question-number" class="text-lg font-light text-neutral-700 mb-6">问题 <span class="font-normal">1</span>/40</h2>
+                    <p id="question-text" class="text-2xl font-light mb-10">喜欢周围有很多朋友</p>
+                    
+                    <!-- 评分选项 (1-5) -->
+                    <div id="rating-options" class="grid grid-cols-5 gap-4 mb-10">
+                        <button class="rating-btn py-4 border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-all-300 flex flex-col items-center hover-effect" data-value="1">
+                            <span class="text-lg font-light mb-2">1</span>
+                            <span class="text-xs text-neutral-500">非常不符合</span>
+                        </button>
+                        <button class="rating-btn py-4 border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-all-300 flex flex-col items-center hover-effect" data-value="2">
+                            <span class="text-lg font-light mb-2">2</span>
+                            <span class="text-xs text-neutral-500">不太符合</span>
+                        </button>
+                        <button class="rating-btn py-4 border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-all-300 flex flex-col items-center hover-effect" data-value="3">
+                            <span class="text-lg font-light mb-2">3</span>
+                            <span class="text-xs text-neutral-500">一般</span>
+                        </button>
+                        <button class="rating-btn py-4 border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-all-300 flex flex-col items-center hover-effect" data-value="4">
+                            <span class="text-lg font-light mb-2">4</span>
+                            <span class="text-xs text-neutral-500">比较符合</span>
+                        </button>
+                        <button class="rating-btn py-4 border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-all-300 flex flex-col items-center hover-effect" data-value="5">
+                            <span class="text-lg font-light mb-2">5</span>
+                            <span class="text-xs text-neutral-500">非常符合</span>
+                        </button>
+                    </div>
+
+                    <!-- 是/否选项 -->
+                    <div id="yes-no-options" class="grid grid-cols-2 gap-6 mb-10 hidden">
+                        <button class="yes-no-btn py-4 border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-all-300 flex items-center justify-center hover-effect" data-value="yes">
+                            <span class="text-lg font-light">是</span>
+                        </button>
+                        <button class="yes-no-btn py-4 border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-all-300 flex items-center justify-center hover-effect" data-value="no">
+                            <span class="text-lg font-light">否</span>
+                        </button>
+                    </div>
+
+                    <!-- 选择题选项 -->
+                    <div id="multiple-choice-options" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 hidden">
+                        <!-- 选项将通过JavaScript动态生成 -->
+                    </div>
+
+                    <!-- MBTI填空 -->
+                    <div id="mbti-input" class="mb-10 hidden">
+                        <input type="text" id="mbti-text" class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-primary focus:bg-neutral-50 transition-all-300" placeholder="请输入你的MBTI类型（如：INTJ）">
+                    </div>
+                </div>
+
+                <!-- 导航按钮 -->
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="bg-white border border-primary text-primary font-light py-2 px-8 hover:bg-neutral-50 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed hover-effect">
+                        <i class="fa fa-arrow-left mr-2"></i> 上一题
+                    </button>
+                    <button id="next-btn" class="bg-white border border-primary text-primary font-light py-2 px-8 hover:bg-black hover:text-white transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed hover-effect">
+                        下一题 <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结果计算页 -->
+        <section id="loading-page" class="screen relative min-h-screen bg-white z-30 flex items-center justify-center hidden">
+            <!-- 装饰线条 -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="horizontal-line top-1/4 w-full"></div>
+                <div class="horizontal-line top-2/4 w-full"></div>
+                <div class="horizontal-line top-3/4 w-full"></div>
+                <div class="vertical-line left-1/4 h-full"></div>
+                <div class="vertical-line left-2/4 h-full"></div>
+                <div class="vertical-line left-3/4 h-full"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 py-8 max-w-4xl relative z-10 text-center">
+                <h2 class="text-3xl font-light text-neutral-800 mb-12">正在分析你的人格特质</h2>
+                
+                <div class="flex justify-center mb-16">
+                    <div class="w-20 h-20 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+                
+                <p class="text-neutral-600">请稍候，我们正在计算你的测试结果</p>
+                
+                <div class="mt-8 flex justify-center">
+                    <div class="flex space-x-4">
+                        <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+                        <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+                        <div class="w-2 h-2 bg-primary rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结果展示页 -->
+        <section id="result-page" class="screen relative min-h-screen bg-white z-20 flex items-center justify-center hidden">
+            <!-- 装饰线条 -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="horizontal-line top-1/4 w-full"></div>
+                <div class="horizontal-line top-2/4 w-full"></div>
+                <div class="horizontal-line top-3/4 w-full"></div>
+                <div class="vertical-line left-1/4 h-full"></div>
+                <div class="vertical-line left-2/4 h-full"></div>
+                <div class="vertical-line left-3/4 h-full"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 py-8 max-w-4xl relative z-10 w-full">
+                <div class="text-center mb-16">
+                    <h2 class="text-2xl font-light text-neutral-700 mb-6">你的校园人格类型是</h2>
+                    <h1 id="personality-type" class="text-5xl md:text-6xl font-light text-primary mb-8">校园阿波罗</h1>
+                    <div class="line-element w-32 mx-auto"></div>
+                    <div class="inline-block border border-neutral-300 px-6 py-2 mt-8">
+                        <span id="personality-dimensions" class="text-lg font-light text-neutral-700">E: 高, N: 低, A: 高, C: 中, O: 中</span>
+                    </div>
+                </div>
+
+                <!-- 人格类型图片 -->
+                <div class="mb-16 text-center">
+                    <div id="personality-image" class="w-48 h-48 mx-auto bg-neutral-100 flex items-center justify-center overflow-hidden">
+                        <!-- 图片将通过JavaScript动态设置 -->
+                        <i class="fa fa-user-circle-o text-6xl text-neutral-400"></i>
+                    </div>
+                </div>
+
+                <!-- 维度得分图表 -->
+                <div class="mb-16">
+                    <h3 class="text-xl font-light text-neutral-700 mb-10 text-center">五大人格维度得分</h3>
+                    <div class="grid grid-cols-5 gap-6">
+                        <div class="dimension-score">
+                            <div class="text-center mb-4">
+                                <span class="font-light text-primary">E</span>
+                                <span class="text-sm text-neutral-500 ml-1">外向性</span>
+                            </div>
+                            <div class="h-48 bg-neutral-100 relative overflow-hidden">
+                                <div id="e-score-bar" class="absolute bottom-0 left-0 right-0 bg-primary transition-all duration-1000 ease-out" style="height: 70%"></div>
+                                <div class="absolute bottom-2 left-0 right-0 text-center text-neutral-800 font-light">
+                                    <span id="e-score-text">33</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dimension-score">
+                            <div class="text-center mb-4">
+                                <span class="font-light text-primary">O</span>
+                                <span class="text-sm text-neutral-500 ml-1">开放性</span>
+                            </div>
+                            <div class="h-48 bg-neutral-100 relative overflow-hidden">
+                                <div id="o-score-bar" class="absolute bottom-0 left-0 right-0 bg-primary transition-all duration-1000 ease-out" style="height: 50%"></div>
+                                <div class="absolute bottom-2 left-0 right-0 text-center text-neutral-800 font-light">
+                                    <span id="o-score-text">25</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dimension-score">
+                            <div class="text-center mb-4">
+                                <span class="font-light text-primary">A</span>
+                                <span class="text-sm text-neutral-500 ml-1">宜人性</span>
+                            </div>
+                            <div class="h-48 bg-neutral-100 relative overflow-hidden">
+                                <div id="a-score-bar" class="absolute bottom-0 left-0 right-0 bg-primary transition-all duration-1000 ease-out" style="height: 80%"></div>
+                                <div class="absolute bottom-2 left-0 right-0 text-center text-neutral-800 font-light">
+                                    <span id="a-score-text">28</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dimension-score">
+                            <div class="text-center mb-4">
+                                <span class="font-light text-primary">C</span>
+                                <span class="text-sm text-neutral-500 ml-1">尽责性</span>
+                            </div>
+                            <div class="h-48 bg-neutral-100 relative overflow-hidden">
+                                <div id="c-score-bar" class="absolute bottom-0 left-0 right-0 bg-primary transition-all duration-1000 ease-out" style="height: 60%"></div>
+                                <div class="absolute bottom-2 left-0 right-0 text-center text-neutral-800 font-light">
+                                    <span id="c-score-text">24</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dimension-score">
+                            <div class="text-center mb-4">
+                                <span class="font-light text-primary">N</span>
+                                <span class="text-sm text-neutral-500 ml-1">神经质</span>
+                            </div>
+                            <div class="h-48 bg-neutral-100 relative overflow-hidden">
+                                <div id="n-score-bar" class="absolute bottom-0 left-0 right-0 bg-primary transition-all duration-1000 ease-out" style="height: 30%"></div>
+                                <div class="absolute bottom-2 left-0 right-0 text-center text-neutral-800 font-light">
+                                    <span id="n-score-text">15</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 特征描述 -->
+                <div class="mb-16">
+                    <h3 class="text-xl font-light text-neutral-700 mb-6">你的校园人格特征</h3>
+                    <div class="border border-neutral-200 p-8">
+                        <p id="personality-description" class="text-neutral-700 leading-relaxed font-light text-lg">
+                            热情开朗，喜欢结交朋友，情绪稳定，很少焦虑。待人友善，容易信任他人。做事有条理但不刻板。是团队中的"阳光人物"。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 深度解读 -->
+                <div class="mb-16">
+                    <h3 class="text-xl font-light text-neutral-700 mb-6">深度解读</h3>
+                    <div class="space-y-6">
+                        <div id="strengths-section" class="border border-neutral-200 p-6">
+                            <h4 class="text-lg font-light text-neutral-800 mb-4">优势与特长</h4>
+                            <ul id="strengths-list" class="list-disc list-inside text-neutral-700 space-y-2 font-light">
+                                <!-- 将通过JavaScript动态填充 -->
+                            </ul>
+                        </div>
+                        <div id="challenges-section" class="border border-neutral-200 p-6">
+                            <h4 class="text-lg font-light text-neutral-800 mb-4">挑战与成长</h4>
+                            <ul id="challenges-list" class="list-disc list-inside text-neutral-700 space-y-2 font-light">
+                                <!-- 将通过JavaScript动态填充 -->
+                            </ul>
+                        </div>
+                        <div id="career-section" class="border border-neutral-200 p-6">
+                            <h4 class="text-lg font-light text-neutral-800 mb-4">适合的专业与职业</h4>
+                            <ul id="career-list" class="list-disc list-inside text-neutral-700 space-y-2 font-light">
+                                <!-- 将通过JavaScript动态填充 -->
+                            </ul>
+                        </div>
+                        <div id="relationship-section" class="border border-neutral-200 p-6">
+                            <h4 class="text-lg font-light text-neutral-800 mb-4">人际关系</h4>
+                            <ul id="relationship-list" class="list-disc list-inside text-neutral-700 space-y-2 font-light">
+                                <!-- 将通过JavaScript动态填充 -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 与他人的比较 -->
+                <div class="mb-16">
+                    <h3 class="text-xl font-light text-neutral-700 mb-6">与他人的比较</h3>
+                    <div class="border border-neutral-200 p-8">
+                        <p class="text-neutral-700 leading-relaxed font-light mb-6">
+                            基于我们收集的<span id="total-tests" class="font-normal">0</span>份测试数据，你的人格类型分布如下：
+                        </p>
+                        <div class="w-full h-64 bg-neutral-100 flex items-center justify-center">
+                            <canvas id="personality-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分享/重测按钮 -->
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <button id="share-btn" class="bg-white border border-primary text-primary font-light py-3 px-8 hover:bg-neutral-50 transition-all-300 hover-effect">
+                        <i class="fa fa-share-alt mr-2"></i> 分享结果
+                    </button>
+                    <button id="retake-btn" class="bg-white border border-primary text-primary font-light py-3 px-8 hover:bg-black hover:text-white transition-all-300 hover-effect">
+                        <i class="fa fa-refresh mr-2"></i> 重新测试
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 数据统计页面 -->
+        <section id="stats-page" class="screen relative min-h-screen bg-white z-10 flex items-center justify-center hidden">
+            <!-- 装饰线条 -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="horizontal-line top-1/4 w-full"></div>
+                <div class="horizontal-line top-2/4 w-full"></div>
+                <div class="horizontal-line top-3/4 w-full"></div>
+                <div class="vertical-line left-1/4 h-full"></div>
+                <div class="vertical-line left-2/4 h-full"></div>
+                <div class="vertical-line left-3/4 h-full"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 py-8 max-w-4xl relative z-10 w-full">
+                <div class="text-center mb-16">
+                    <h1 class="text-4xl font-light text-primary mb-6">测试数据统计</h1>
+                    <div class="line-element w-32 mx-auto"></div>
+                    <p class="text-neutral-600 mt-6">基于<span id="stats-total-tests" class="font-normal">0</span>份测试结果的统计分析</p>
+                </div>
+
+                <!-- 人格类型分布 -->
+                <div class="mb-16">
+                    <h2 class="text-2xl font-light text-neutral-700 mb-8">人格类型分布</h2>
+                    <div class="border border-neutral-200 p-6">
+                        <div class="w-full h-80">
+                            <canvas id="stats-personality-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 维度平均分 -->
+                <div class="mb-16">
+                    <h2 class="text-2xl font-light text-neutral-700 mb-8">五大人格维度平均分</h2>
+                    <div class="border border-neutral-200 p-6">
+                        <div class="w-full h-80">
+                            <canvas id="stats-dimensions-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 返回按钮 -->
+                <div class="text-center">
+                    <button id="back-to-intro-btn" class="bg-white border border-primary text-primary font-light py-3 px-10 rounded-none hover:bg-black hover:text-white transition-all-300 text-lg hover-effect">
+                        <i class="fa fa-arrow-left mr-3"></i> 返回首页
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 分享弹窗 -->
+    <div id="share-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-light text-neutral-800">分享你的测试结果</h3>
+                <button id="close-share-modal" class="text-neutral-500 hover:text-neutral-800 hover-effect">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="mb-8">
+                <p class="text-neutral-600 mb-6">我在校园人格测试中获得了<span id="share-type" class="font-normal text-primary">校园阿波罗</span>类型！</p>
+                <div class="border border-neutral-200 p-4 mb-6">
+                    <p id="share-text" class="text-neutral-700 text-sm font-light">
+                        热情开朗，喜欢结交朋友，情绪稳定，很少焦虑。待人友善，容易信任他人。做事有条理但不刻板。是团队中的"阳光人物"。
+                    </p>
+                </div>
+                <div class="flex justify-center space-x-6">
+                    <button class="w-10 h-10 border border-neutral-300 flex items-center justify-center hover:border-primary hover:bg-neutral-50 transition-all-300 hover-effect">
+                        <i class="fa fa-wechat"></i>
+                    </button>
+                    <button class="w-10 h-10 border border-neutral-300 flex items-center justify-center hover:border-primary hover:bg-neutral-50 transition-all-300 hover-effect">
+                        <i class="fa fa-qq"></i>
+                    </button>
+                    <button class="w-10 h-10 border border-neutral-300 flex items-center justify-center hover:border-primary hover:bg-neutral-50 transition-all-300 hover-effect">
+                        <i class="fa fa-weibo"></i>
+                    </button>
+                </div>
+            </div>
+            <button id="copy-link-btn" class="w-full bg-white border border-primary text-primary font-light py-2 hover:bg-neutral-50 transition-all-300 hover-effect">
+                复制链接
+            </button>
+        </div>
+    </div>
+
+    <!-- 提示弹窗 -->
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white border border-neutral-200 px-6 py-3 shadow-sm z-50 hidden opacity-0 transition-opacity duration-300">
+        <span id="toast-message" class="text-neutral-700 font-light">操作成功</span>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
