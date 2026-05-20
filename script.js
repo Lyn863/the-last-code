@@ -1,57 +1,69 @@
-// Firebase 配置
-const firebaseConfig = {
-    apiKey: "AIzaSyD1w7QzV6yF7qJ1X5wJZ7X5X7z8X5X7z8X",
-    authDomain: "campus-personality-test.firebaseapp.com",
-    projectId: "campus-personality-test",
-    storageBucket: "campus-personality-test.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:1234567890123456789012",
-    measurementId: "G-123456789012"
+// 模拟 analytics 和 db 对象，避免报错
+const analytics = {
+    logEvent: (eventName, params) => {
+        console.log('Analytics event:', eventName, params);
+    }
 };
 
-// 初始化 Firebase
-let analytics = null;
-let db = null;
-try {
-    firebase.initializeApp(firebaseConfig);
-    analytics = firebase.analytics();
-    db = firebase.firestore();
-} catch (e) {
-    console.warn('Firebase 初始化失败，核心功能不受影响:', e);
-}
+const db = {
+    collection: () => ({
+        add: (data) => {
+            console.log('Mock Firestore add:', data);
+            return Promise.resolve({ id: 'mock-id' });
+        },
+        get: () => {
+            console.log('Mock Firestore get');
+            return Promise.resolve({ size: 0, forEach: () => {} });
+        }
+    })
+};
 
 // 自定义鼠标效果
 const customCursor = document.getElementById('custom-cursor');
 const hoverElements = document.querySelectorAll('.hover-effect');
 
 document.addEventListener('mousemove', (e) => {
-    customCursor.style.left = `${e.clientX}px`;
-    customCursor.style.top = `${e.clientY}px`;
+    if (customCursor) {
+        customCursor.style.left = `${e.clientX}px`;
+        customCursor.style.top = `${e.clientY}px`;
+    }
 });
 
 document.addEventListener('mousedown', () => {
-    customCursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    if (customCursor) {
+        customCursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    }
 });
 
 document.addEventListener('mouseup', () => {
-    customCursor.style.transform = 'translate(-50%, -50%) scale(1)';
-});
-
-hoverElements.forEach(element => {
-    element.addEventListener('mouseenter', () => {
-        customCursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-        customCursor.style.borderColor = '#000';
-    });
-
-    element.addEventListener('mouseleave', () => {
+    if (customCursor) {
         customCursor.style.transform = 'translate(-50%, -50%) scale(1)';
-        customCursor.style.borderColor = '#000';
-    });
+    }
 });
+
+if (hoverElements) {
+    hoverElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            if (customCursor) {
+                customCursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                customCursor.style.borderColor = '#000';
+            }
+        });
+
+        element.addEventListener('mouseleave', () => {
+            if (customCursor) {
+                customCursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                customCursor.style.borderColor = '#000';
+            }
+        });
+    });
+}
 
 // 显示自定义鼠标
 setTimeout(() => {
-    customCursor.style.opacity = '1';
+    if (customCursor) {
+        customCursor.style.opacity = '1';
+    }
 }, 500);
 
 // 页面切换效果
@@ -67,11 +79,9 @@ function showScreen(screenId) {
         targetScreen.classList.remove('hidden');
         
         // 记录页面访问
-        if (typeof analytics !== 'undefined') {
-            analytics.logEvent('screen_view', {
-                screen_name: screenId
-            });
-        }
+        analytics.logEvent('screen_view', {
+            screen_name: screenId
+        });
     }
 }
 
@@ -462,6 +472,7 @@ const personalityTypes = [
         image: 'https://img.icons8.com/color/480/000000/hearth.png',
         myth_info: '赫斯提亚：灶神与家宅之神，宙斯的大姐。她为维持奥林匹斯山的秩序，主动让出十二主神之位，专注守护每家每户的炉火。正如赫斯提亚一样，你安静温和，善于倾听理解，在校园中是和谐与温暖的代表。'
     }
+];
 
 // 全局变量
 let currentQuestionIndex = 0;
@@ -484,26 +495,60 @@ const toast = document.getElementById('toast');
 
 // 初始化
 function init() {
-    // 绑定事件监听器
-    startTestBtn.addEventListener('click', startTest);
-    statsBtn.addEventListener('click', showStatsPage);
-    backToIntroBtn.addEventListener('click', () => showScreen('intro-page'));
-    prevBtn.addEventListener('click', goToPreviousQuestion);
-    nextBtn.addEventListener('click', goToNextQuestion);
-    retakeBtn.addEventListener('click', retakeTest);
-    shareBtn.addEventListener('click', showShareModal);
-    closeShareModal.addEventListener('click', hideShareModal);
-    copyLinkBtn.addEventListener('click', copyShareLink);
+    console.log('初始化开始');
+    
+    // 绑定事件监听器（检查元素是否存在）
+    if (startTestBtn) {
+        startTestBtn.addEventListener('click', startTest);
+        console.log('开始测试按钮已绑定');
+    } else {
+        console.error('找不到开始测试按钮');
+    }
+    
+    if (statsBtn) {
+        statsBtn.addEventListener('click', showStatsPage);
+    }
+    
+    if (backToIntroBtn) {
+        backToIntroBtn.addEventListener('click', () => showScreen('intro-page'));
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', goToPreviousQuestion);
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', goToNextQuestion);
+    }
+    
+    if (retakeBtn) {
+        retakeBtn.addEventListener('click', retakeTest);
+    }
+    
+    if (shareBtn) {
+        shareBtn.addEventListener('click', showShareModal);
+    }
+    
+    if (closeShareModal) {
+        closeShareModal.addEventListener('click', hideShareModal);
+    }
+    
+    if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', copyShareLink);
+    }
     
     // 加载统计数据
     loadStatsData();
     
     // 初始化图表
     initCharts();
+    
+    console.log('初始化完成');
 }
 
 // 开始测试
 function startTest() {
+    console.log('开始测试被调用');
     currentQuestionIndex = 0;
     userAnswers = new Array(questions.length).fill(null);
     userInfo = {};
@@ -564,14 +609,16 @@ function showQuestion(index) {
     }
     
     // 更新导航按钮状态
-    prevBtn.disabled = index === 0;
-    nextBtn.disabled = userAnswers[index] === null;
+    if (prevBtn) prevBtn.disabled = index === 0;
+    if (nextBtn) nextBtn.disabled = userAnswers[index] === null;
     
     // 如果是最后一题，更改按钮文本
-    if (index === questions.length - 1) {
-        nextBtn.innerHTML = '完成测试 <i class="fa fa-check ml-2"></i>';
-    } else {
-        nextBtn.innerHTML = '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+    if (nextBtn) {
+        if (index === questions.length - 1) {
+            nextBtn.innerHTML = '完成测试 <i class="fa fa-check ml-2"></i>';
+        } else {
+            nextBtn.innerHTML = '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+        }
     }
 }
 
@@ -589,7 +636,7 @@ function updateRatingOptions(questionId) {
         btn.onclick = () => {
             const value = parseInt(btn.dataset.value);
             userAnswers[currentQuestionIndex] = value;
-            nextBtn.disabled = false;
+            if (nextBtn) nextBtn.disabled = false;
             updateRatingOptions(questionId);
         };
     });
@@ -609,7 +656,7 @@ function updateYesNoOptions(questionId) {
         btn.onclick = () => {
             const value = btn.dataset.value;
             userAnswers[currentQuestionIndex] = value;
-            nextBtn.disabled = false;
+            if (nextBtn) nextBtn.disabled = false;
             updateYesNoOptions(questionId);
         };
     });
@@ -637,7 +684,7 @@ function updateMultipleChoiceOptions(questionId, options) {
         
         btn.onclick = () => {
             userAnswers[currentQuestionIndex] = option;
-            nextBtn.disabled = false;
+            if (nextBtn) nextBtn.disabled = false;
             updateMultipleChoiceOptions(questionId, options);
         };
         
@@ -659,7 +706,7 @@ function updateMBTIInput(questionId) {
     input.oninput = () => {
         const value = input.value.trim().toUpperCase();
         userAnswers[currentQuestionIndex] = value;
-        nextBtn.disabled = !value;
+        if (nextBtn) nextBtn.disabled = !value;
     };
 }
 
@@ -811,32 +858,15 @@ function matchPersonalityType(scores) {
     return bestMatch;
 }
 
-// 保存测试结果
+// 保存测试结果（仅使用 localStorage）
 function saveTestResult(scores, personalityType) {
     const testResult = {
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
         scores: scores,
         personalityType: personalityType.id,
-        testDuration: (new Date() - testStartTime) / 1000, // 秒
+        testDuration: testStartTime ? (new Date() - testStartTime) / 1000 : 0,
         userInfo: userInfo
     };
-    
-    // 尝试保存到 Firebase（即使失败也不影响页面）
-    try {
-        db.collection('testResults').add(testResult)
-            .then(docRef => {
-                console.log('测试结果已保存到 Firebase:', docRef.id);
-                analytics.logEvent('test_complete', {
-                    personality_type: personalityType.id,
-                    test_duration: testResult.testDuration
-                });
-            })
-            .catch(error => {
-                console.error('Firebase 保存失败:', error);
-            });
-    } catch (e) {
-        console.warn('Firebase 不可用，跳过远程保存');
-    }
 
     // 保存到 localStorage，供管理后台使用
     try {
@@ -847,8 +877,7 @@ function saveTestResult(scores, personalityType) {
         
         const resultForStorage = {
             ...testResult,
-            lastTenAnswers: lastTenAnswers,               // 最后十题答案
-            timestamp: testResult.timestamp.toISOString() // 转为字符串便于存储
+            lastTenAnswers: lastTenAnswers               // 最后十题答案
         };
         
         allResults.push(resultForStorage);
@@ -857,6 +886,12 @@ function saveTestResult(scores, personalityType) {
     } catch (e) {
         console.error('本地存储失败:', e);
     }
+
+    // 记录完成事件
+    analytics.logEvent('test_complete', {
+        personality_type: personalityType.id,
+        test_duration: testResult.testDuration
+    });
 }
 
 // 显示结果
@@ -893,8 +928,10 @@ function updateDimensionScores(scores) {
     // 更新得分条高度和文本
     Object.keys(scores).forEach(dim => {
         const percentage = (scores[dim] / 5) * 100;
-        document.getElementById(`${dim.toLowerCase()}-score-bar`).style.height = `${percentage}%`;
-        document.getElementById(`${dim.toLowerCase()}-score-text`).textContent = scores[dim];
+        const bar = document.getElementById(`${dim.toLowerCase()}-score-bar`);
+        const text = document.getElementById(`${dim.toLowerCase()}-score-text`);
+        if (bar) bar.style.height = `${percentage}%`;
+        if (text) text.textContent = scores[dim];
     });
 }
 
@@ -908,39 +945,47 @@ function updatePersonalityDetails(personalityType) {
     
     // 更新优势与特长
     const strengthsList = document.getElementById('strengths-list');
-    strengthsList.innerHTML = '';
-    personalityType.strengths.forEach(strength => {
-        const li = document.createElement('li');
-        li.textContent = strength;
-        strengthsList.appendChild(li);
-    });
+    if (strengthsList) {
+        strengthsList.innerHTML = '';
+        personalityType.strengths.forEach(strength => {
+            const li = document.createElement('li');
+            li.textContent = strength;
+            strengthsList.appendChild(li);
+        });
+    }
     
     // 更新挑战与成长
     const challengesList = document.getElementById('challenges-list');
-    challengesList.innerHTML = '';
-    personalityType.challenges.forEach(challenge => {
-        const li = document.createElement('li');
-        li.textContent = challenge;
-        challengesList.appendChild(li);
-    });
+    if (challengesList) {
+        challengesList.innerHTML = '';
+        personalityType.challenges.forEach(challenge => {
+            const li = document.createElement('li');
+            li.textContent = challenge;
+            challengesList.appendChild(li);
+        });
+    }
     
     // 更新适合的专业与职业
     const careerList = document.getElementById('career-list');
-    careerList.innerHTML = '';
-    personalityType.career.forEach(career => {
-        const li = document.createElement('li');
-        li.textContent = career;
-        careerList.appendChild(li);
-    });
+    if (careerList) {
+        careerList.innerHTML = '';
+        personalityType.career.forEach(career => {
+            const li = document.createElement('li');
+            li.textContent = career;
+            careerList.appendChild(li);
+        });
+    }
     
     // 更新人际关系
     const relationshipList = document.getElementById('relationship-list');
-    relationshipList.innerHTML = '';
-    personalityType.relationship.forEach(relationship => {
-        const li = document.createElement('li');
-        li.textContent = relationship;
-        relationshipList.appendChild(li);
-    });
+    if (relationshipList) {
+        relationshipList.innerHTML = '';
+        personalityType.relationship.forEach(relationship => {
+            const li = document.createElement('li');
+            li.textContent = relationship;
+            relationshipList.appendChild(li);
+        });
+    }
 }
 
 // 重新测试
@@ -950,12 +995,12 @@ function retakeTest() {
 
 // 显示分享弹窗
 function showShareModal() {
-    shareModal.classList.remove('hidden');
+    if (shareModal) shareModal.classList.remove('hidden');
 }
 
 // 隐藏分享弹窗
 function hideShareModal() {
-    shareModal.classList.add('hidden');
+    if (shareModal) shareModal.classList.add('hidden');
 }
 
 // 复制分享链接
@@ -974,19 +1019,21 @@ function copyShareLink() {
 // 显示提示
 function showToast(message) {
     const toastMessage = document.getElementById('toast-message');
-    toastMessage.textContent = message;
+    if (toastMessage) toastMessage.textContent = message;
     
-    toast.classList.remove('hidden');
-    setTimeout(() => {
-        toast.classList.add('opacity-100');
-    }, 10);
-    
-    setTimeout(() => {
-        toast.classList.remove('opacity-100');
+    if (toast) {
+        toast.classList.remove('hidden');
         setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 300);
-    }, 3000);
+            toast.classList.add('opacity-100');
+        }, 10);
+        
+        setTimeout(() => {
+            toast.classList.remove('opacity-100');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 300);
+        }, 3000);
+    }
 }
 
 // 显示统计页面
@@ -997,24 +1044,16 @@ function showStatsPage() {
 
 // 加载统计数据
 function loadStatsData() {
-    // 尝试从 Firebase 获取测试总数（失败时从 localStorage 获取）
+    // 从 localStorage 获取测试总数
     try {
-        db.collection('testResults').get()
-            .then(querySnapshot => {
-                const totalTests = querySnapshot.size;
-                document.getElementById('total-tests').textContent = totalTests;
-                document.getElementById('stats-total-tests').textContent = totalTests;
-            })
-            .catch(error => {
-                console.error('获取统计数据时出错:', error);
-                const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
-                document.getElementById('total-tests').textContent = localResults.length;
-                document.getElementById('stats-total-tests').textContent = localResults.length;
-            });
-    } catch (e) {
         const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
-        document.getElementById('total-tests').textContent = localResults.length;
-        document.getElementById('stats-total-tests').textContent = localResults.length;
+        const totalTests = localResults.length;
+        const totalTestsElem = document.getElementById('total-tests');
+        const statsTotalTestsElem = document.getElementById('stats-total-tests');
+        if (totalTestsElem) totalTestsElem.textContent = totalTests;
+        if (statsTotalTestsElem) statsTotalTestsElem.textContent = totalTests;
+    } catch (e) {
+        console.error('加载统计数据失败:', e);
     }
 }
 
@@ -1119,7 +1158,7 @@ function initCharts() {
     }
 }
 
-// 更新结果页面的图表（优先使用 localStorage 数据）
+// 更新结果页面的图表（使用 localStorage 数据）
 function updateResultCharts() {
     // 获取人格类型分布数据
     const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
@@ -1139,37 +1178,11 @@ function updateResultCharts() {
         personalityDistributionChart.data.datasets[0].data = personalityTypes.map(type => typeCounts[type.id]);
         personalityDistributionChart.update();
     }
-    
-    // 同时也尝试从 Firebase 更新（如果可用）
-    try {
-        db.collection('testResults').get()
-            .then(querySnapshot => {
-                const fbTypeCounts = {};
-                personalityTypes.forEach(type => {
-                    fbTypeCounts[type.id] = 0;
-                });
-                
-                querySnapshot.forEach(doc => {
-                    const result = doc.data();
-                    if (fbTypeCounts.hasOwnProperty(result.personalityType)) {
-                        fbTypeCounts[result.personalityType]++;
-                    }
-                });
-                
-                if (personalityDistributionChart) {
-                    personalityDistributionChart.data.datasets[0].data = personalityTypes.map(type => fbTypeCounts[type.id]);
-                    personalityDistributionChart.update();
-                }
-            })
-            .catch(error => {
-                console.error('获取 Firebase 人格分布数据时出错:', error);
-            });
-    } catch (e) {}
 }
 
 // 更新统计页面的图表
 function updateStatsCharts() {
-    // 优先使用 localStorage 数据
+    // 使用 localStorage 数据
     const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
     const typeCounts = {};
     const dimensionScores = { E: 0, O: 0, A: 0, C: 0, N: 0 };
@@ -1221,8 +1234,10 @@ function updateStatsCharts() {
     }
     
     // 更新测试总数
-    document.getElementById('total-tests').textContent = totalTests;
-    document.getElementById('stats-total-tests').textContent = totalTests;
+    const totalTestsElem = document.getElementById('total-tests');
+    const statsTotalTestsElem = document.getElementById('stats-total-tests');
+    if (totalTestsElem) totalTestsElem.textContent = totalTests;
+    if (statsTotalTestsElem) statsTotalTestsElem.textContent = totalTests;
 }
 
 // 页面加载完成后初始化
