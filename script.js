@@ -165,7 +165,8 @@ const personalityTypes = [
             '倾向于建立广泛但可能不够深入的人际关系',
             '在冲突中倾向于寻求和解'
         ],
-        image: 'https://img.icons8.com/color/480/000000/sun--v1.png'
+        image: 'https://img.icons8.com/color/480/000000/sun--v1.png',
+        myth_info: '阿波罗：宙斯之子，司光明、艺术、预言。他斩杀巨蛇皮同，建立德尔斐神庙；与玛耳绪阿斯比笛后获胜，惩罚了对手。正如阿波罗一样，你散发着阳光般的魅力，在校园中是理性与美的化身，照亮周围的人。'
     },
     {
         id: 'campus_athena',
@@ -196,7 +197,8 @@ const personalityTypes = [
             '在人际关系中可能显得较为理性',
             '对朋友的选择较为挑剔'
         ],
-        image: 'https://img.icons8.com/color/480/000000/olympia.png'
+        image: 'https://img.icons8.com/color/480/000000/olympia.png',
+        myth_info: '雅典娜：智慧与战争女神，从宙斯头颅中全副武装诞生。曾与波塞冬争夺雅典城，以橄榄树取胜，成为城市守护神。正如雅典娜一样，你展现出非凡的智慧和分析能力，在校园中是知识与策略的化身。'
     },
     {
         id: 'campus_dionysus',
@@ -227,7 +229,8 @@ const personalityTypes = [
             '可能在亲密关系中表现得较为不稳定',
             '喜欢与有趣、有创意的人交往'
         ],
-        image: 'https://img.icons8.com/color/480/000000/wine-glass.png'
+        image: 'https://img.icons8.com/color/480/000000/wine-glass.png',
+        myth_info: '狄俄尼索斯：酒与狂欢之神，宙斯与塞墨勒之子。他教会人们种植葡萄，流浪各地传播狂欢秘仪，最终被接上奥林匹斯山。正如狄俄尼索斯一样，你充满活力和创意，在校园中是激情与自由的化身。'
     },
     {
         id: 'campus_hermes',
@@ -258,7 +261,8 @@ const personalityTypes = [
             '交友广泛但可能缺乏深度',
             '喜欢变化和新鲜感'
         ],
-        image: 'https://img.icons8.com/color/480/000000/winged-shoes.png'
+        image: 'https://img.icons8.com/color/480/000000/winged-shoes.png',
+        myth_info: '赫尔墨斯：神使、盗贼与商旅之神。出生当天就偷走阿波罗的牛群，并发明里拉琴。他引导亡灵前往冥界，机敏善辩。正如赫尔墨斯一样，你灵活多变，善于适应不同环境，在校园中是机智与多面手的代表。'
     },
     {
         id: 'campus_artemis',
@@ -289,7 +293,8 @@ const personalityTypes = [
             '可能不善于表达情感',
             '重视个人空间和隐私'
         ],
-        image: 'https://img.icons8.com/color/480/000000/bow-and-arrow.png'
+        image: 'https://img.icons8.com/color/480/000000/bow-and-arrow.png',
+        myth_info: '阿尔忒弥斯：狩猎与月亮女神，阿波罗的孪生姐姐。她终身不嫁，携带银弓在山林中狩猎，曾让冒犯她的猎人化为鹿被猎杀。正如阿尔忒弥斯一样，你独立自主，做事认真负责，在校园中是专注与自我驱动的代表。'
     },
     {
         id: 'campus_zeus',
@@ -320,7 +325,8 @@ const personalityTypes = [
             '可能难以接受他人的建议或批评',
             '在亲密关系中可能显得较为强势'
         ],
-        image: 'https://img.icons8.com/color/480/000000/lightning-bolt.png'
+        image: 'https://img.icons8.com/color/480/000000/lightning-bolt.png',
+        myth_info: '宙斯：众神之王，雷霆之主。推翻父亲克洛诺斯，与波塞冬、哈迪斯抽签分治天、海、冥界。他多情善变，屡次惩罚凡人僭越。正如宙斯一样，你自信果断，有领导能力，在校园中是天生的领导者。'
     },
     {
         id: 'campus_demeter',
@@ -351,7 +357,8 @@ const personalityTypes = [
             '善于倾听和支持他人',
             '可能过度付出而忽视自身需求'
         ],
-        image: 'https://img.icons8.com/color/480/000000/wheat.png'
+        image: 'https://img.icons8.com/color/480/000000/wheat.png',
+        myth_info: '得墨忒尔：农业与丰收女神。女儿珀耳塞福涅被哈迪斯掳走，她悲恸致使大地荒芜，迫使宙斯允许女儿每年回返，形成四季。正如得墨忒尔一样，你温柔体贴，善于照顾他人，在校园中是关怀与奉献的代表。'
     },
     {
         id: 'campus_poseidon',
@@ -382,7 +389,8 @@ const personalityTypes = [
             '可能过于敏感，容易误解他人',
             '喜欢与能够理解自己的人交往'
         ],
-        image: 'https://img.icons8.com/color/480/000000/waves.png'
+        image: 'https://img.icons8.com/color/480/000000/waves.png',
+        myth_info: '波塞冬：海神，宙斯之兄。手持三叉戟能掀起风暴与地震。曾与雅典娜争夺雅典，输后三叉戟击地涌出泉水。正如波塞冬一样，你情感丰富，有创造力，在校园中是艺术与直觉的代表。'
     },
     {
         id: 'campus_hades',
@@ -413,7 +421,8 @@ const personalityTypes = [
             '可能不善于表达情感',
             '喜欢与能够深入交流的人交往'
         ],
-        image: 'https://img.icons8.com/color/480/000000/underworld.png'
+        image: 'https://img.icons8.com/color/480/000000/underworld.png',
+        myth_info: '哈迪斯：冥界之王，宙斯之兄。他掳走珀耳塞福涅为妻，但允许她每年回地上。他公正冷酷，掌管地下财富。正如哈迪斯一样，你内向深沉，善于思考分析，在校园中是深度思考与洞察力的代表。'
     },
     {
         id: 'campus_hestia',
@@ -444,9 +453,9 @@ const personalityTypes = [
             '善于创造温馨和谐的氛围',
             '可能过于迁就他人而忽视自身需求'
         ],
-        image: 'https://img.icons8.com/color/480/000000/hearth.png'
-    }
-];
+        image: 'https://img.icons8.com/color/480/000000/hearth.png',
+        myth_info: '赫斯提亚：灶神与家宅之神，宙斯的大姐。她为维持奥林匹斯山的秩序，主动让出十二主神之位，专注守护每家每户的炉火。正如赫斯提亚一样，你安静温和，善于倾听理解，在校园中是和谐与温暖的代表。'
+    };
 
 // 全局变量
 let currentQuestionIndex = 0;
@@ -806,19 +815,42 @@ function saveTestResult(scores, personalityType) {
         userInfo: userInfo
     };
     
-    // 保存到 Firebase
-    db.collection('testResults').add(testResult)
-        .then(docRef => {
-            console.log('测试结果已保存:', docRef.id);
-            // 记录测试完成事件
-            analytics.logEvent('test_complete', {
-                personality_type: personalityType.id,
-                test_duration: testResult.testDuration
+    // 尝试保存到 Firebase（即使失败也不影响页面）
+    try {
+        db.collection('testResults').add(testResult)
+            .then(docRef => {
+                console.log('测试结果已保存到 Firebase:', docRef.id);
+                analytics.logEvent('test_complete', {
+                    personality_type: personalityType.id,
+                    test_duration: testResult.testDuration
+                });
+            })
+            .catch(error => {
+                console.error('Firebase 保存失败:', error);
             });
-        })
-        .catch(error => {
-            console.error('保存测试结果时出错:', error);
-        });
+    } catch (e) {
+        console.warn('Firebase 不可用，跳过远程保存');
+    }
+
+    // 保存到 localStorage，供管理后台使用
+    try {
+        const allResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
+        
+        // 从 userAnswers 中提取最后 10 题（第41-50题，索引 40-49）
+        const lastTenAnswers = userAnswers.slice(40, 50);
+        
+        const resultForStorage = {
+            ...testResult,
+            lastTenAnswers: lastTenAnswers,               // 最后十题答案
+            timestamp: testResult.timestamp.toISOString() // 转为字符串便于存储
+        };
+        
+        allResults.push(resultForStorage);
+        localStorage.setItem('allTestResults', JSON.stringify(allResults));
+        console.log('结果已保存到本地存储');
+    } catch (e) {
+        console.error('本地存储失败:', e);
+    }
 }
 
 // 显示结果
@@ -862,6 +894,12 @@ function updateDimensionScores(scores) {
 
 // 更新人格详情
 function updatePersonalityDetails(personalityType) {
+    // 填充希腊神话信息
+    const mythInfo = document.getElementById('myth-info');
+    if (mythInfo) {
+        mythInfo.textContent = personalityType.myth_info || '该人格类型暂无希腊神话原型信息。';
+    }
+    
     // 更新优势与特长
     const strengthsList = document.getElementById('strengths-list');
     strengthsList.innerHTML = '';
@@ -953,16 +991,25 @@ function showStatsPage() {
 
 // 加载统计数据
 function loadStatsData() {
-    // 获取测试总数
-    db.collection('testResults').get()
-        .then(querySnapshot => {
-            const totalTests = querySnapshot.size;
-            document.getElementById('total-tests').textContent = totalTests;
-            document.getElementById('stats-total-tests').textContent = totalTests;
-        })
-        .catch(error => {
-            console.error('获取统计数据时出错:', error);
-        });
+    // 尝试从 Firebase 获取测试总数（失败时从 localStorage 获取）
+    try {
+        db.collection('testResults').get()
+            .then(querySnapshot => {
+                const totalTests = querySnapshot.size;
+                document.getElementById('total-tests').textContent = totalTests;
+                document.getElementById('stats-total-tests').textContent = totalTests;
+            })
+            .catch(error => {
+                console.error('获取统计数据时出错:', error);
+                const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
+                document.getElementById('total-tests').textContent = localResults.length;
+                document.getElementById('stats-total-tests').textContent = localResults.length;
+            });
+    } catch (e) {
+        const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
+        document.getElementById('total-tests').textContent = localResults.length;
+        document.getElementById('stats-total-tests').textContent = localResults.length;
+    }
 }
 
 // 图表实例
@@ -1066,96 +1113,110 @@ function initCharts() {
     }
 }
 
-// 更新结果页面的图表
+// 更新结果页面的图表（优先使用 localStorage 数据）
 function updateResultCharts() {
     // 获取人格类型分布数据
-    db.collection('testResults').get()
-        .then(querySnapshot => {
-            const typeCounts = {};
-            personalityTypes.forEach(type => {
-                typeCounts[type.id] = 0;
-            });
-            
-            querySnapshot.forEach(doc => {
-                const result = doc.data();
-                if (typeCounts.hasOwnProperty(result.personalityType)) {
-                    typeCounts[result.personalityType]++;
+    const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
+    const typeCounts = {};
+    personalityTypes.forEach(type => {
+        typeCounts[type.id] = 0;
+    });
+    
+    localResults.forEach(result => {
+        if (typeCounts.hasOwnProperty(result.personalityType)) {
+            typeCounts[result.personalityType]++;
+        }
+    });
+    
+    if (personalityDistributionChart) {
+        personalityDistributionChart.data.labels = personalityTypes.map(type => type.name);
+        personalityDistributionChart.data.datasets[0].data = personalityTypes.map(type => typeCounts[type.id]);
+        personalityDistributionChart.update();
+    }
+    
+    // 同时也尝试从 Firebase 更新（如果可用）
+    try {
+        db.collection('testResults').get()
+            .then(querySnapshot => {
+                const fbTypeCounts = {};
+                personalityTypes.forEach(type => {
+                    fbTypeCounts[type.id] = 0;
+                });
+                
+                querySnapshot.forEach(doc => {
+                    const result = doc.data();
+                    if (fbTypeCounts.hasOwnProperty(result.personalityType)) {
+                        fbTypeCounts[result.personalityType]++;
+                    }
+                });
+                
+                if (personalityDistributionChart) {
+                    personalityDistributionChart.data.datasets[0].data = personalityTypes.map(type => fbTypeCounts[type.id]);
+                    personalityDistributionChart.update();
                 }
+            })
+            .catch(error => {
+                console.error('获取 Firebase 人格分布数据时出错:', error);
             });
-            
-            // 更新图表数据
-            if (personalityDistributionChart) {
-                personalityDistributionChart.data.labels = personalityTypes.map(type => type.name);
-                personalityDistributionChart.data.datasets[0].data = personalityTypes.map(type => typeCounts[type.id]);
-                personalityDistributionChart.update();
-            }
-        })
-        .catch(error => {
-            console.error('获取人格分布数据时出错:', error);
-        });
+    } catch (e) {}
 }
 
 // 更新统计页面的图表
 function updateStatsCharts() {
-    // 获取人格类型分布数据
-    db.collection('testResults').get()
-        .then(querySnapshot => {
-            const typeCounts = {};
-            const dimensionScores = { E: 0, O: 0, A: 0, C: 0, N: 0 };
-            let totalTests = 0;
-            
-            personalityTypes.forEach(type => {
-                typeCounts[type.id] = 0;
-            });
-            
-            querySnapshot.forEach(doc => {
-                const result = doc.data();
-                
-                // 统计人格类型
-                if (typeCounts.hasOwnProperty(result.personalityType)) {
-                    typeCounts[result.personalityType]++;
+    // 优先使用 localStorage 数据
+    const localResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
+    const typeCounts = {};
+    const dimensionScores = { E: 0, O: 0, A: 0, C: 0, N: 0 };
+    let totalTests = 0;
+    
+    personalityTypes.forEach(type => {
+        typeCounts[type.id] = 0;
+    });
+    
+    localResults.forEach(result => {
+        // 统计人格类型
+        if (typeCounts.hasOwnProperty(result.personalityType)) {
+            typeCounts[result.personalityType]++;
+        }
+        
+        // 统计维度得分
+        if (result.scores) {
+            Object.keys(dimensionScores).forEach(dim => {
+                if (result.scores[dim]) {
+                    dimensionScores[dim] += result.scores[dim];
                 }
-                
-                // 统计维度得分
-                Object.keys(dimensionScores).forEach(dim => {
-                    if (result.scores && result.scores[dim]) {
-                        dimensionScores[dim] += result.scores[dim];
-                    }
-                });
-                
-                totalTests++;
             });
-            
-            // 更新人格分布图表
-            if (statsPersonalityChart) {
-                const colors = [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-                    '#FF9F40', '#C9CBCF', '#7BC225', '#1A73E8', '#EA4335'
-                ];
-                
-                statsPersonalityChart.data.labels = personalityTypes.map(type => type.name);
-                statsPersonalityChart.data.datasets[0].data = personalityTypes.map(type => typeCounts[type.id]);
-                statsPersonalityChart.data.datasets[0].backgroundColor = colors;
-                statsPersonalityChart.update();
-            }
-            
-            // 更新维度平均分图表
-            if (statsDimensionsChart && totalTests > 0) {
-                const avgScores = Object.keys(dimensionScores).map(dim => 
-                    Math.round((dimensionScores[dim] / totalTests) * 10) / 10
-                );
-                
-                statsDimensionsChart.data.datasets[0].data = avgScores;
-                statsDimensionsChart.update();
-            }
-            
-            // 更新测试总数
-            document.getElementById('total-tests').textContent = totalTests;
-            document.getElementById('stats-total-tests').textContent = totalTests;
-        })
-        .catch(error => {
-            console.error('获取统计数据时出错:', error);
-        });
+        }
+        
+        totalTests++;
+    });
+    
+    // 更新人格分布图表
+    if (statsPersonalityChart) {
+        const colors = [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+            '#FF9F40', '#C9CBCF', '#7BC225', '#1A73E8', '#EA4335'
+        ];
+        
+        statsPersonalityChart.data.labels = personalityTypes.map(type => type.name);
+        statsPersonalityChart.data.datasets[0].data = personalityTypes.map(type => typeCounts[type.id]);
+        statsPersonalityChart.data.datasets[0].backgroundColor = colors;
+        statsPersonalityChart.update();
+    }
+    
+    // 更新维度平均分图表
+    if (statsDimensionsChart && totalTests > 0) {
+        const avgScores = Object.keys(dimensionScores).map(dim => 
+            Math.round((dimensionScores[dim] / totalTests) * 10) / 10
+        );
+        
+        statsDimensionsChart.data.datasets[0].data = avgScores;
+        statsDimensionsChart.update();
+    }
+    
+    // 更新测试总数
+    document.getElementById('total-tests').textContent = totalTests;
+    document.getElementById('stats-total-tests').textContent = totalTests;
 }
 
 // 页面加载完成后初始化
