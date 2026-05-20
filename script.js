@@ -10,9 +10,15 @@ const firebaseConfig = {
 };
 
 // 初始化 Firebase
-firebase.initializeApp(firebaseConfig);
-const analytics = firebase.analytics();
-const db = firebase.firestore();
+let analytics = null;
+let db = null;
+try {
+    firebase.initializeApp(firebaseConfig);
+    analytics = firebase.analytics();
+    db = firebase.firestore();
+} catch (e) {
+    console.warn('Firebase 初始化失败，核心功能不受影响:', e);
+}
 
 // 自定义鼠标效果
 const customCursor = document.getElementById('custom-cursor');
