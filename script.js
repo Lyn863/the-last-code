@@ -461,7 +461,7 @@ const personalityTypes = [
         ],
         image: 'https://img.icons8.com/color/480/000000/hearth.png',
         myth_info: '赫斯提亚：灶神与家宅之神，宙斯的大姐。她为维持奥林匹斯山的秩序，主动让出十二主神之位，专注守护每家每户的炉火。正如赫斯提亚一样，你安静温和，善于倾听理解，在校园中是和谐与温暖的代表。'
-    };
+    }
 
 // 全局变量
 let currentQuestionIndex = 0;
