@@ -1170,6 +1170,20 @@ function updateStatsCharts() {
             console.error('获取统计数据时出错:', error);
         });
 }
+// 假设你的代码中有一个处理测试结果的函数
+function saveTestResult(resultData) {
+  // 从 localStorage 获取已有的测试结果列表，如果没有就创建一个空数组
+  const allResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
+  
+  // 给新的测试结果加上时间戳
+  resultData.timestamp = new Date().toISOString();
+  
+  // 将新结果添加到列表中
+  allResults.push(resultData);
+  
+  // 将更新后的列表存回 localStorage
+  localStorage.setItem('allTestResults', JSON.stringify(allResults));
+}
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', init);
