@@ -1184,6 +1184,18 @@ function saveTestResult(resultData) {
   // 将更新后的列表存回 localStorage
   localStorage.setItem('allTestResults', JSON.stringify(allResults));
 }
+function saveTestResult(resultData) {
+  const allResults = JSON.parse(localStorage.getItem('allTestResults') || '[]');
+
+  resultData.timestamp = new Date().toISOString();
+
+  // ✅ 假设用户的全部答案顺序存放在 allAnswers 数组里
+  // 取出最后 10 题，如果不满 10 题就全取
+  resultData.lastTenAnswers = allAnswers.slice(-10);
+
+  allResults.push(resultData);
+  localStorage.setItem('allTestResults', JSON.stringify(allResults));
+}
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', init);
